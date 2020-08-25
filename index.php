@@ -2,7 +2,6 @@
 
 require 'config/config.php';
 
-require 'base/Database.php';
 require 'base/Model.php';
 
 require 'base/Controller.php';

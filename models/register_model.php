@@ -5,6 +5,7 @@ class Register_model extends Model {
 
 	function __construct() {
 		parent::__construct();
+		$this->db = new Model;
 	}
 
 
@@ -17,7 +18,9 @@ class Register_model extends Model {
 
 		if ($users[0]){
 
-			echo 'Пользователь с таким e-mail уже есть';
+			//echo 'Пользователь с таким e-mail уже есть';
+
+			return false;
 
 		}else{
 

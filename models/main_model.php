@@ -4,6 +4,7 @@ class Main_model extends Model {
 
 	function __construct() {
 		parent::__construct();
+		$this->db = new Model;
 	}
 
 
@@ -61,7 +62,49 @@ class Main_model extends Model {
 			$resultArray[] = $value;
 		}
 
+		$this->selectForJson();
+
 		return $resultArray;
+
+	}
+
+	function selectForJson(){
+
+		$query = "SELECT * FROM messages ORDER BY id DESC";
+		$result = $this->db->query($query);
+		$messages = $result->fetchAll(PDO::FETCH_ASSOC);
+
+		$result = [];
+
+		foreach($messages as $value){
+
+			for ($i = 1; $i < sizeof($value); $i++){
+
+				$userIdByMes = $value['id_user'];
+
+				$resultUsers = $this->db->prepare("SELECT * FROM users WHERE `id` = :userIdByMes");
+				$resultUsers->execute([':userIdByMes'=> $userIdByMes]);
+
+				$users = $resultUsers->fetch(PDO::FETCH_ASSOC);
+
+				$value['name'] = $users['name'];
+
+			}
+
+			$result[] = $value;
+		}
+
+
+
+		$newFile = 'messages.json';
+
+		$fp = fopen($newFile, 'w');
+
+		$toJson = json_encode($result, JSON_PRETTY_PRINT);
+
+		fputs($fp, $toJson);
+
+		fclose($fp);
 
 	}
 

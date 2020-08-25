@@ -6,6 +6,7 @@ class Auth_model extends Model {
 
 	function __construct() {
 		parent::__construct();
+		$this->db = new Model;
 	}
 
 
@@ -67,10 +68,6 @@ class Auth_model extends Model {
 
 				$value['name'] = $users['name'];
 
-//				if ($users['name'] == 'admin'){
-//
-//					$_SESSION['user_id'] = $users['id'] . 'admin';
-//				}
 			}
 
 			$resultArray[] = $value;

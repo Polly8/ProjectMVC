@@ -12,13 +12,18 @@ class Register extends Controller{
 
 		parent::__construct();
 
-		$this->name = htmlspecialchars($_POST['name']);
+		$name = $_POST['name'];
+		$email = $_POST['login'];
+		$originalPassword = $_POST['password'];
+		$repeatedPassword = $_POST['repeat-password'];
 
-		$this->email = trim(htmlspecialchars($_POST['login']), ' ');
+		$this->name = htmlspecialchars($name);
 
-		$this->originalPassword = trim(htmlspecialchars($_POST['password']));
+		$this->email = trim(htmlspecialchars($email), ' ');
 
-		$this->repeatedPassword = trim(htmlspecialchars($_POST['repeat-password']));
+		$this->originalPassword = trim(htmlspecialchars($originalPassword), ' ');
+
+		$this->repeatedPassword = trim(htmlspecialchars($repeatedPassword), ' ');
 
 		$this->hashPassword = sha1($this->originalPassword . 'bfhegu4355,frg');
 
@@ -56,6 +61,6 @@ class Register extends Controller{
 
 		$this->model->registration($name, $email, $hashPassword);
 
-
+		$this->view->render('registration/index');
 	}
 }

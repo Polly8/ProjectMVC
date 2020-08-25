@@ -7,6 +7,28 @@ $url = explode('/', $url);
 
 
 
+function getMessagesJson($user_name){
+
+	$fp = fopen('messages.json', 'r');
+	$content = file_get_contents('messages.json');
+
+	$fromJson = json_decode($content, true);
+
+	foreach($fromJson as $value){
+
+		if (in_array($user_name, $value)){
+
+			echo '<br>';
+			echo $value['text'];
+		}
+	}
+
+}
+
+getMessagesJson('admin');
+
+
+
 
 if (empty($url[0])) {
 
@@ -33,7 +55,7 @@ if (empty($url[0])) {
 	if (!isset($_SESSION['user_id']) && $url[0] != 'register' && $url[0] != 'auth' && $url[0] != 'message') {
 
 		require 'Controllers/registration.php';
-		$controller = new Registration;
+		$controller = new Registration();
 		$controller->loadModel('registration');
 
 		echo 'Вы должны войти или зарегистрироваться!' . '<br>';

@@ -12,8 +12,11 @@ class Auth extends Controller{
 
 		parent::__construct();
 
-		$this->email = htmlspecialchars($_POST['login']);
-		$this->originalPassword = htmlspecialchars($_POST['password']);
+		$email = $_POST['login'];
+		$originalPassword = $_POST['password'];
+
+		$this->email = htmlspecialchars($email);
+		$this->originalPassword = htmlspecialchars($originalPassword);
 		$this->hashPassword = sha1($this->originalPassword . 'bfhegu4355,frg');
 	}
 

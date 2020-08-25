@@ -7,6 +7,7 @@ class Deletemessage_model extends Model {
 	function __construct() {
 
 		parent::__construct();
+		$this->db = new Model;
 	}
 
 

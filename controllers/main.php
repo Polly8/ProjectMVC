@@ -9,7 +9,9 @@ class Main extends Controller{
 
 		parent::__construct();
 
-		$this->message = htmlspecialchars($_POST['message']);
+		$message = $_POST['message'];
+
+		$this->message = htmlspecialchars($message);
 
 	}
 

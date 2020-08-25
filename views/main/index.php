@@ -19,6 +19,8 @@
 <br>
 <hr>
 
+
+
 <?php foreach($datas as $data): ?>
 
 	<form action="deletemessage" class="message-form" method="post">
@@ -35,6 +37,8 @@
 
 			<? if (file_exists('../../images/' . $data['id'] . '.png')):?>
 				<img src="/image.php/?id=<?=$data['id'];?>" alt="No image">
+
+
 			<? endif; ?>
 		</div>
 
@@ -48,6 +52,9 @@
 	</form>
 
 <?php endforeach ?>
+
+
+
 
 
 

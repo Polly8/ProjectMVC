@@ -8,4 +8,3 @@ class Registration_model extends Model {
 	}
 
 }
-
