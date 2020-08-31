@@ -1,5 +1,7 @@
 <?php
 
+include 'vendor/autoload.php';
+
 require 'config/config.php';
 
 require 'base/Model.php';

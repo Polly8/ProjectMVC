@@ -12,7 +12,7 @@ class Registration extends Controller{
 
 	function index(){
 
-		$this->view->render('registration/index');
+		$this->view->renderTwig('registration/index');
 	}
 
 }

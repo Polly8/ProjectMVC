@@ -30,7 +30,8 @@ class Main extends Controller{
 
 		$this->datas = $this->model->selectMessages();
 
-		$this->view->render('main/index', $this->datas);
+
+		$this->view->renderTwig('main/index', ['datas' => $this->datas, 'session' => $_SESSION['user_id']]);
 
 	}
 

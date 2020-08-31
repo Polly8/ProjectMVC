@@ -61,6 +61,6 @@ class Register extends Controller{
 
 		$this->model->registration($name, $email, $hashPassword);
 
-		$this->view->render('registration/index');
+		$this->view->renderTwig('registration/index');
 	}
 }

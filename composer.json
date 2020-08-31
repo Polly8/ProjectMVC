@@ -1,0 +1,13 @@
+{
+
+  "require": {
+    "twig/twig":"^2.0",
+    "swiftmailer/swiftmailer": "^6.0"
+  },
+
+  "config": {
+    "disable-tls": true,
+    "secure-http": false
+  }
+}
+

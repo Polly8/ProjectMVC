@@ -29,6 +29,7 @@
 			<div class="info">
 				<div class="name">Сообщение от: <b><?php echo $data['name'] ?></b></div>
 				<div class="date"><?php echo $data['date'] ?></div>
+
 			</div>
 
 			<div class="text">

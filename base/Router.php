@@ -25,7 +25,7 @@ function getMessagesJson($user_name){
 
 }
 
-getMessagesJson('admin');
+//getMessagesJson('admin');
 
 
 
@@ -52,7 +52,7 @@ if (empty($url[0])) {
 	$path = 'controllers/' . $url[0] . '.php';
 
 
-	if (!isset($_SESSION['user_id']) && $url[0] != 'register' && $url[0] != 'auth' && $url[0] != 'message') {
+	if (!isset($_SESSION['user_id']) && $url[0] != 'register' && $url[0] != 'auth' && $url[0] != 'message' && $url[0] != 'test') {
 
 		require 'Controllers/registration.php';
 		$controller = new Registration();

@@ -1,0 +1,67 @@
+TWIIIIIIIIGGGG
+<br>
+<br>
+<form enctype="multipart/form-data" action="main" method="post">
+
+    <b>Сообщение:</b><br><br>
+
+    <textarea name="message"></textarea><br><br>
+
+
+    Добавить изображение:<br><br>
+    <input name="userfile" type="file" /><br><br>
+
+
+    <input type="submit" value="Отправить">
+
+</form>
+
+<br>
+<hr>
+
+
+
+
+
+{% for data in datas %}
+
+
+    <form action="deletemessage" class="message-form" method="post">
+
+        <div class="message">
+            <div class="info">
+                <div class="name">Сообщение от: <b>{{ data.name }}</b></div>
+                <div class="date">{{ data.date }}</div>
+
+            </div>
+
+            <div class="text">
+                {{ data.text }}
+            </div>
+
+
+
+
+            {% set path = '../../images/' ~  data.id ~ '.png'  %}
+
+            {% if path  is defined %}
+
+                <img src="/image.php/?id={{ data.id }}" alt="No image">
+
+            {% endif %}
+
+        </div>
+
+        {% if 'admin' in  session  %}
+
+            <input type="text" class="hidden" name="message-id" value="{{ data.id }}">
+            <input type="submit" value="удалить" class="delete-btn">
+
+        {% endif %}
+
+    </form>
+
+{% endfor %}
+
+
+

@@ -36,7 +36,9 @@ class Auth extends Controller{
 
 			$datas = $this->model->selectMessages();
 
-			$this->view->render('main/index', $datas);
+
+
+			$this->view->renderTwig('main/index', ['datas' => $datas, 'session' => $_SESSION['user_id']]);
 
 		}
 
