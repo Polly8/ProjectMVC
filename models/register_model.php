@@ -5,16 +5,18 @@ class Register_model extends Model {
 
 	function __construct() {
 		parent::__construct();
-		$this->db = new Model;
+		//$this->db = new Model;
 	}
 
 
 	function registration($name, $email, $password){
 
 
-		$result = $this->db->prepare("SELECT * FROM users WHERE `email` = :email LIMIT 1");
-		$result->execute([':email'=> $email]);
-		$users = $result->fetchAll();
+		$usersData= User::query()->where('email', '=', $email)->get();
+
+
+		$users = $usersData->toArray();
+
 
 		if ($users[0]){
 
@@ -24,14 +26,22 @@ class Register_model extends Model {
 
 		}else{
 
-			$query = $this->db->prepare("INSERT INTO users (`name`, `email`, `password`) 
-VALUES ( :name, :email, :password);");
-			$query->execute([':name'=> $name, ':email'=> $email, ':password' => $password]);
+
+			$usersData = [
+				'name' => $name,
+				'email' => $email,
+				'password' => $password
+			];
 
 
-			if ($query){
+			$newUser = User::create($usersData);
+
+
+
+			if ($newUser){
 
 				echo "Пользователь $name создан!";
+
 
 			}else{
 

@@ -1,67 +1,123 @@
 
-<br>
-<br>
-<form enctype="multipart/form-data" action="main" method="post">
 
-    <b>Сообщение:</b><br><br>
+<div class="left-part">
 
-    <textarea name="message"></textarea><br><br>
+    <br>
+    <br>
+    <form enctype="multipart/form-data" action="main" method="post">
 
+        <b>Сообщение:</b><br><br>
 
-    Добавить изображение:<br><br>
-    <input name="userfile" type="file" /><br><br>
-
-
-    <input type="submit" value="Отправить">
-
-</form>
-
-<br>
-<hr>
+        <textarea name="message"></textarea><br><br>
 
 
+        Добавить изображение:<br><br>
+        <input name="userfile" type="file" /><br><br>
 
 
-
-{% for data in datas %}
-
-
-    <form action="deletemessage" class="message-form" method="post">
-
-        <div class="message">
-            <div class="info">
-                <div class="name">Сообщение от: <b>{{ data.name }}</b></div>
-                <div class="date">{{ data.date }}</div>
-
-            </div>
-
-            <div class="text">
-                {{ data.text }}
-            </div>
-
-
-
-
-            {% set path = '../../images/' ~  data.id ~ '.png'  %}
-
-            {% if path  is defined %}
-
-                <img src="/image.php/?id={{ data.id }}" alt="No image">
-
-            {% endif %}
-
-        </div>
-
-        {% if 'admin' in  session  %}
-
-            <input type="text" class="hidden" name="message-id" value="{{ data.id }}">
-            <input type="submit" value="удалить" class="delete-btn">
-
-        {% endif %}
+        <input type="submit" value="Отправить">
 
     </form>
 
-{% endfor %}
+    <br>
+    <hr>
+
+
+    {% for data in datas %}
+
+
+        <form action="deletemessage" class="message-form" method="post">
+
+            <div class="message">
+                <div class="info">
+                    <div class="name">Сообщение от: <b>{{ data.name }}</b></div>
+                    <div class="date">{{ data.created_at }}</div>
+
+                </div>
+
+                <div class="text">
+                    {{ data.text }}
+                </div>
+
+
+                {% set path = '../../images/' ~  data.id ~ '.png'  %}
+
+                {% if path  is defined %}
+
+                    <img src="/image.php/?id={{ data.id }}" alt="No image">
+
+                {% endif %}
+
+            </div>
+
+            {% if 'admin' in  session  %}
+
+                <input type="text" class="hidden" name="message-id" value="{{ data.id }}">
+                <input type="submit" value="удалить" class="delete-btn">
+
+            {% endif %}
+
+        </form>
+
+    {% endfor %}
+
+
+</div>
+
+
+<div class="right-part">
+
+    {% if 'admin' in  session  %}
+
+        <form action="main" class="create-user" method="post">
+
+            <b>Создать нового пользователя:</b><br><br>
+
+            Имя: <input type="text" name="name" value="" required><br><br>
+            E-mail: <input type="text" name="login" value="" required><br><br>
+            Пароль: <input type="password" name="password" value="" required><br><br>
+            <input type="submit" value="создать" class="create-btn">
+
+        </form>
+
+        <br>
+        <hr>
+
+        {% for user in users %}
+
+            <div class="wrapper-user">
+
+                <form action="changeuser" class="ch-user" method="post">
+
+                        <div class="user">
+
+
+                            Имя: <input type="text" name="username" value="{{ user.name }}" required><br><br>
+                            E-mail: <input type="text" name="userlogin" value="{{ user.email }}" required><br><br>
+                            Пароль: <input type="password" name="userpassword" value="" ><br><br>
+
+                            <input type="text" class="hidden" name="userid" value="{{ user.id }}">
+                            <input type="submit" value="сохранить изменения" class="change-btn">
+
+                        </div>
+                </form>
+
+
+                <form action="deleteuser" class="del-user" method="post">
+
+                    <input type="text" class="hidden" name="delemail" value="{{ user.email }}">
+                    <input type="submit" value="удалить" class="create-btn">
+                </form>
+
+            </div>
+
+
+        {% endfor %}
+
+    {% endif %}
+
+
+</div>
 
 
 

@@ -6,6 +6,7 @@ class Auth extends Controller{
 	public $originalPassword;
 	public $hashPassword;
 	public $name;
+	public $usersDatas;
 
 
 	function __construct() {
@@ -36,9 +37,11 @@ class Auth extends Controller{
 
 			$datas = $this->model->selectMessages();
 
+			$this->usersDatas = $this->model->selectUsers();
 
 
-			$this->view->renderTwig('main/index', ['datas' => $datas, 'session' => $_SESSION['user_id']]);
+
+			$this->view->renderTwig('main/index', ['datas' => $datas, 'users' => $this->usersDatas, 'session' => $_SESSION['user_id']]);
 
 		}
 

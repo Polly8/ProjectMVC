@@ -18,9 +18,11 @@ class Deletemessage extends Controller{
 
 		$datas = $this->model->deleteMessage($message);
 
+		$this->usersDatas = $this->model->selectUsers();
 
 
-		$this->view->renderTwig('main/index', ['datas' => $datas, 'session' => $_SESSION['user_id']]);
+
+		$this->view->renderTwig('main/index', ['datas' => $datas, 'users' => $this->usersDatas, 'session' => $_SESSION['user_id']]);
 
 
 	}

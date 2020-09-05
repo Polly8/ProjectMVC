@@ -7,6 +7,7 @@ $url = explode('/', $url);
 
 
 
+
 function getMessagesJson($user_name){
 
 	$fp = fopen('messages.json', 'r');
@@ -67,6 +68,7 @@ if (empty($url[0])) {
 			require $path;
 			$controller = new $url[0];
 			$controller->loadModel($url[0]);
+
 
 		}else{
 

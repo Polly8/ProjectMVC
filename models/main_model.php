@@ -13,17 +13,28 @@ class Main_model extends Model {
 
 		if ($message){
 
-			$result = $this->db->prepare("INSERT INTO messages (`text`, `id_user`) VALUES (:message, :user_id);");
-			$result->execute([':message'=> $message, ':user_id' => $user_id]);
+//			$result = $this->db->prepare("INSERT INTO messages (`text`, `id_user`) VALUES (:message, :user_id);");
+//			$result->execute([':message'=> $message, ':user_id' => $user_id]);
 
 
-			$postId = $this->db->lastInsertId();
+
+			$messageData = [
+				'text' => $message,
+				'id_user' => $user_id
+			];
+
+
+			$newMessage = Message::create($messageData);
+
+
+			$postId = $newMessage['id'];
+
 			if (!empty($_FILES['userfile']['tmp_name'])) {
 				$fileContent = file_get_contents($_FILES['userfile']['tmp_name']);
 				file_put_contents('../../images/'. $postId . '.png', $fileContent);
 			}
 
-			if ($result){
+			if ($newMessage){
 
 				echo 'Сообщение отправлено!';
 			}
@@ -38,28 +49,33 @@ class Main_model extends Model {
 
 	function selectMessages(){
 
-		$query = "SELECT * FROM messages ORDER BY id DESC LIMIT 20";
-		$result = $this->db->query($query);
-		$messages = $result->fetchAll(PDO::FETCH_ASSOC);
+
+		$messagesData= Message::orderBy('id', 'desc')->take(20)->get();
+
 
 		$resultArray = [];
 
-		foreach($messages as $value){
+		foreach($messagesData as $key => $value){
 
-			for ($i = 1; $i < sizeof($value); $i++){
+			for ($i = 1; $i < sizeof($messagesData); $i++){
 
 				$userIdByMes = $value['id_user'];
 
-				$resultUsers = $this->db->prepare("SELECT * FROM users WHERE `id` = :userIdByMes");
-				$resultUsers->execute([':userIdByMes'=> $userIdByMes]);
 
-				$users = $resultUsers->fetch(PDO::FETCH_ASSOC);
+				$resultUsers= User::query()->where('id', '=', $userIdByMes)->get();
 
-				$value['name'] = $users['name'];
+
+
+				foreach($resultUsers as $keyU => $valueU){
+
+					$value['name'] = $valueU['name'];
+
+				}
 
 			}
 
 			$resultArray[] = $value;
+
 		}
 
 		$this->selectForJson();
@@ -68,30 +84,33 @@ class Main_model extends Model {
 
 	}
 
+
+
 	function selectForJson(){
 
-		$query = "SELECT * FROM messages ORDER BY id DESC";
-		$result = $this->db->query($query);
-		$messages = $result->fetchAll(PDO::FETCH_ASSOC);
+		$resultData= Message::orderBy('id', 'desc')->get();
 
 		$result = [];
 
-		foreach($messages as $value){
+		foreach($resultData as $key => $value){
 
-			for ($i = 1; $i < sizeof($value); $i++){
+			for ($i = 1; $i < sizeof($resultData); $i++){
 
 				$userIdByMes = $value['id_user'];
 
-				$resultUsers = $this->db->prepare("SELECT * FROM users WHERE `id` = :userIdByMes");
-				$resultUsers->execute([':userIdByMes'=> $userIdByMes]);
 
-				$users = $resultUsers->fetch(PDO::FETCH_ASSOC);
+				$resultUsers= User::query()->where('id', '=', $userIdByMes)->get();
 
-				$value['name'] = $users['name'];
+				foreach($resultUsers as $keyU => $valueU){
+
+					$value['name'] = $valueU['name'];
+
+				}
 
 			}
 
 			$result[] = $value;
+
 		}
 
 
@@ -105,6 +124,67 @@ class Main_model extends Model {
 		fputs($fp, $toJson);
 
 		fclose($fp);
+
+	}
+
+
+
+	function selectUsers(){
+
+		$usersResult = User::all();
+
+		$usersArray = [];
+
+		foreach($usersResult as $key => $value){
+
+			$usersArray[] = $value;
+		}
+
+
+		return $usersArray;
+
+	}
+
+	function createUser($name, $email, $password){
+
+
+		$usersData= User::query()->where('email', '=', $email)->get();
+
+
+		$users = $usersData->toArray();
+
+
+		if ($users[0]){
+
+			//echo 'Пользователь с таким e-mail уже есть';
+
+			return false;
+
+		}else{
+
+
+			$usersData = [
+				'name' => $name,
+				'email' => $email,
+				'password' => $password
+			];
+
+
+			$newUser = User::create($usersData);
+
+
+
+			if ($newUser){
+
+				echo "Пользователь $name создан!";
+
+
+			}else{
+
+				echo 'Error';
+			}
+
+		}
 
 	}
 

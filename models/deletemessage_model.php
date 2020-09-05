@@ -7,45 +7,69 @@ class Deletemessage_model extends Model {
 	function __construct() {
 
 		parent::__construct();
-		$this->db = new Model;
+		//$this->db = new Model;
 	}
 
 
 	function deleteMessage($message){
 
 
+		$delMessage= Message::query()->where('id', '=', $message)->delete();
 
-		$result = $this->db->prepare("DELETE FROM messages WHERE `id` = :message");
-		$result->execute([':message'=> $message]);
 
-		$query = "SELECT * FROM messages ORDER BY id DESC LIMIT 20";
-		$result = $this->db->query($query);
-		$messages = $result->fetchAll(PDO::FETCH_ASSOC);
+
+		$messagesData= Message::orderBy('id', 'desc')->take(20)->get();
+
 
 		$resultArray = [];
 
-		foreach($messages as $value){
+		foreach($messagesData as $key => $value){
 
-			for ($i = 1; $i < sizeof($value); $i++){
+			for ($i = 1; $i < sizeof($messagesData); $i++){
 
 				$userIdByMes = $value['id_user'];
 
-				$resultUsers = $this->db->prepare("SELECT * FROM users WHERE `id` = :userIdByMes");
-				$resultUsers->execute([':userIdByMes'=> $userIdByMes]);
 
-				$users = $resultUsers->fetch(PDO::FETCH_ASSOC);
+				$resultUsers= User::query()->where('id', '=', $userIdByMes)->get();
 
-				$value['name'] = $users['name'];
 
+
+				foreach($resultUsers as $keyU => $valueU){
+
+					$value['name'] = $valueU['name'];
+
+				}
 
 			}
 
 			$resultArray[] = $value;
+
+
 		}
 
 		return $resultArray;
 
+
 	}
+
+
+
+	function selectUsers(){
+
+		$usersResult = User::all();
+
+		$usersArray = [];
+
+		foreach($usersResult as $key => $value){
+
+			$usersArray[] = $value;
+		}
+
+
+		return $usersArray;
+
+	}
+
 
 
 }

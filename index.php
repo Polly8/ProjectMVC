@@ -3,6 +3,8 @@
 include 'vendor/autoload.php';
 
 require 'config/config.php';
+require 'base/eloquent.php';
+//require 'base/migrations.php';
 
 require 'base/Model.php';
 
